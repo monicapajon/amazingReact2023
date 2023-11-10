@@ -1,20 +1,25 @@
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import CardComponent from '../Card';
+import SearchFilter from '../SearchFilter';
+import Checkbox from '../Checkbox';
+import './Main.css';
 
-import React, { useEffect, useState } from "react";
-import CardComponent from "../Card";
-import SearchFilter from "../SearchFilter";
-import Checkbox from "../Checkbox";
-import "./Main.css";
-
-const Main = (props) => {
-  let [eventos, setEventos] = useState([]);
+const Main = ({ title }) => {
+  const eventos = useSelector((store) => store.eventos);
   let [filteredEvents, setFilteredEvents] = useState([]);
-  let [eventName, setEventName] = useState("");
+  let [eventName, setEventName] = useState('');
   let [selectedCategories, setSelectedCategories] = useState([]);
 
   useEffect(() => {
-    setEventos(props.events);
-    setFilteredEvents(props.events);
-  }, [props.events]);
+    if (title === 'Past events') {
+      setFilteredEvents(eventos.filter((event) => event.assistance));
+    } else if (title === 'Upcoming events') {
+      setFilteredEvents(eventos.filter((event) => event.estimate));
+    } else {
+      setFilteredEvents(eventos);
+    }
+  }, [eventos, title]);
 
   const filterEvents = (name, categories) => {
     const eventsFilter = eventos.filter((event) => {
@@ -25,14 +30,13 @@ const Main = (props) => {
     });
     setFilteredEvents(eventsFilter);
   };
-//search
+
   const handleSearchSubmit = (event) => {
     event.preventDefault();
     filterEvents(eventName, selectedCategories);
   };
 
-//este es el del buscador search
-  const handleInputChange = (e) => { 
+  const handleInputChange = (e) => {
     const inputValue = e.target.value;
     setEventName(inputValue);
     filterEvents(inputValue, selectedCategories);
@@ -51,15 +55,17 @@ const Main = (props) => {
   };
 
   return (
-    <>
-      <h1 className="page_title text-shadow-diagonal">{props.title}</h1>
+    <div>
+      <h1 className="page_title text-shadow-diagonal" role="mainElement">
+        {title}
+      </h1>
       <form className="search" onSubmit={handleSearchSubmit}>
         <Checkbox
           className="checkbox"
           selectedCategories={selectedCategories}
           handleCategoryChange={handleCategoryChange}
         />
-        <SearchFilter 
+        <SearchFilter
           className="search_bar"
           eventName={eventName}
           handleInputChange={handleInputChange}
@@ -73,12 +79,14 @@ const Main = (props) => {
         ) : eventName ? (
           <p>No events found matching your search.</p>
         ) : (
-          eventos.map((evento, index) => (
-            <CardComponent key={index} evento={evento} />
-          ))
+          <div className="card-container">
+            {eventos.map((evento, index) => (
+              <CardComponent key={index} evento={evento} />
+            ))}
+          </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

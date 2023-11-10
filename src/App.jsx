@@ -6,16 +6,16 @@ import Contact from './pages/Contact';
 import Details from './pages/Details';
 import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; //me va a disparar el eventos actions
 import eventosActions from './store/actions/eventosActions';
 
 function App() {
-  let [pastEvents, setPastEvents] = useState([]);
-  let [upcomingEvents, setUpcomingEvents] = useState([]);
+  //let [pastEvents, setPastEvents] = useState([]);
+  //let [upcomingEvents, setUpcomingEvents] = useState([]);
 
   const dispatch = useDispatch(); //antes del useEffect porque es donde se carga el componente. Hay que meterlo adentro del despachante porque los hooks no se pueden meyter dentro de otro hook
-  const eventos = useSelector((store) => store.eventos);
+  const eventos = useSelector(store => store.eventos);
 
   useEffect(() => {
     dispatch(eventosActions.get_eventos());
@@ -35,15 +35,15 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<Home title="Amazing events" events={eventos} />}
+            element={<Home title="Amazing events"  />}
           />
           <Route
             path="/past"
-            element={<Home title="Past events" events={pastEvents} />}
+            element={<Home title="Past events"  />}
           />
           <Route
             path="/upcoming"
-            element={<Home title="Upcoming events" events={upcomingEvents} />}
+            element={<Home title="Upcoming events"  />}
           />
           <Route path="/stats" Component={Stats} />
           <Route path="/contact" Component={Contact} />

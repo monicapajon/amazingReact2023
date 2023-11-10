@@ -4,7 +4,7 @@ import './Layout.css';
 
 const Layout = ({ children }) => {
   return (
-    <div className="containerLayout">
+    <div className="containerLayout" role="layoutContainer">
       <Header title="Titulo principal" description="description" />
       {children}
       <Footer />
