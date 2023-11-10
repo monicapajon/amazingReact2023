@@ -1,26 +1,17 @@
-import { createAction } from '@reduxjs/toolkit';
-
-const get_eventos = createAction('get_eventos', () => {
-  //la funcion callback va a devolver un array q va a ser la carga util
-  //identificación unica de la accion y la accion q va a realizar por ej traer un array de eventos
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+const get_eventos = createAsyncThunk('get_eventos', async () => {
   try {
-    //aqui vamos a meter la funcion, o lo q queramos que haga la funcion
-    let eventos = [
-      //aqui hacemos una solicitud con la API AXIOS fetch
-      { name: 'Evento1', description: 'description1' },
-      { name: 'Evento2', description: 'description2' },
-      { name: 'Evento3', description: 'description3' },
-      { name: 'Evento4', description: 'description4' },
-      { name: 'Evento5', description: 'description5' },
-    ];
-    return {
-      //retorna un objeto dentro de una propiedad
-      eventos: eventos,
-    };
+    let eventos = await axios.get('/src/data/data.json').then((response) => {
+      return response.data.events;
+    });
+
+    return eventos;
   } catch (e) {
-    console.log('Error:  ' + e);
+    console.log(e);
   }
 });
 
 const eventosActions = { get_eventos };
+
 export default eventosActions;
