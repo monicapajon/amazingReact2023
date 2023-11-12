@@ -24,6 +24,7 @@ const FormDemo = () => (
             type="email"
             placeholder="Enter your email"
             required
+            role="email-input"
           />
         </div>
       </div>
@@ -39,7 +40,11 @@ const FormDemo = () => (
       </div>
 
       <div className="control">
-        <button className="button is-primary" style={{ marginTop: '10px' }}>
+        <button className="button is-primary" style={{ marginTop: '10px' }}
+        role="submit-button">
+        
+
+
           Send
         </button>
       </div>
